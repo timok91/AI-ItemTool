@@ -72,6 +72,29 @@ DEFAULT_QUESTIONS = [
 def main():
     st.title("AI Item-Entwicklungs-Tool")
     
+    # Add explanation box here
+    st.markdown("""
+    ### Über dieses Tool
+    Dieses Tool unterstützt Sie bei der Entwicklung von Items, indem es die semantische Ähnlichkeit zwischen einer 
+    Konstruktdefinition und möglichen Items berechnet. Die Analyse basiert auf zwei verschiedenen Sprachmodellen (BERT und SBERT), 
+    die speziell für die deutsche Sprache optimiert wurden.
+    
+    Die Ähnlichkeitswerte reichen von 0 (keine Ähnlichkeit) bis 1 (perfekte Ähnlichkeit).
+    """)
+    
+    # Optional: Add more detailed information in an expandable section
+    with st.expander("ℹ️ Detaillierte Informationen"):
+        st.markdown("""
+        **Funktionsweise:**
+        1. Geben Sie eine Konstruktdefinition ein oder nutzen Sie das vorgegebene Beispiel
+        2. Fügen Sie potenzielle Items hinzu
+        3. Starten Sie die Analyse
+        4. Prüfen Sie die Ergebnisse in den verschiedenen Tabs:
+            - BERT Ergebnisse
+            - SBERT Ergebnisse
+            - Item-Ähnlichkeiten (Heatmap)
+        """)
+
     # Load models
     tokenizer, model, sbert_model = load_models()
 
