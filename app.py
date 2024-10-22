@@ -13,6 +13,7 @@ from transformers import BertTokenizer, BertModel
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+import plotly.express as px
 
 @st.cache_resource
 def load_models():
@@ -149,7 +150,7 @@ def main():
                                     for embedding in sbert_embeddings]
                 
                 # Create tabs for results
-                tab1, tab2 = st.tabs(["BERT Ergebnisse", "SBERT Ergebnisse"])
+                tab1, tab2, tab3 = st.tabs(["BERT Ergebnisse", "SBERT Ergebnisse", "Item Heatmap"])
                 
                 with tab1:
                     st.subheader("Top 5 Items (BERT)")
@@ -172,6 +173,41 @@ def main():
                         st.progress(float(similarity))
                         st.markdown(f"Ähnlichkeit: {similarity:.4f}")
                         st.divider()
+
+                with tab3:
+                    st.subheader("Paarweise Ähnlichkeiten zwischen Items")
+                    
+                    # Calculate pairwise similarities
+                    n_items = len(questions)
+                    sbert_similarity_matrix = np.zeros((n_items, n_items))
+                    
+                    # Calculate SBERT similarities
+                    for i in range(n_items):
+                        for j in range(n_items):
+                            similarity = abs(cosine_similarity([sbert_embeddings[i]], [sbert_embeddings[j]])[0][0])
+                            sbert_similarity_matrix[i, j] = similarity
+                    
+                    # Create heatmap using plotly
+                    import plotly.express as px
+                    
+                    fig = px.imshow(
+                        sbert_similarity_matrix,
+                        labels=dict(x="Items", y="Items", color="Ähnlichkeit"),
+                        x=questions,  # Use actual questions instead of numbers
+                        y=questions,  # Use actual questions instead of numbers
+                        color_continuous_scale=[[0, "white"], [1, "#26358B"]],
+                        aspect="auto"
+                    )
+
+                    fig.update_layout(
+                        width=1000,  # Increased width to accommodate text
+                        height=1000,  # Increased height to accommodate text
+                        title="Heatmap der Item-Ähnlichkeiten",
+                        xaxis_tickangle=-45  # Angle the text for better readability
+                    )
+                    
+                    st.plotly_chart(fig, use_container_width=True)
+                    
 
 if __name__ == "__main__":
     main()
