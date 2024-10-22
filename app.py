@@ -82,6 +82,8 @@ def main():
     Die Ähnlichkeitswerte reichen von 0 (keine Ähnlichkeit) bis 1 (perfekte Ähnlichkeit).
     """)
     
+    st.info("Die App wurde inspiriert durch [diesen Blog-Artikel von Damiano D'Urso](https://damianodurso.github.io/Sentence-embeddings-for-Employee-Listening/).", icon="ℹ️")
+
     # Optional: Add more detailed information in an expandable section
     with st.expander("ℹ️ Detaillierte Informationen"):
         st.markdown("""
