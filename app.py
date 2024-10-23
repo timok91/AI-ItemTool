@@ -75,17 +75,25 @@ def main():
     # Add explanation box here
     st.markdown("""
     ### Über dieses Tool
-    Dieses Tool unterstützt Sie bei der Entwicklung von Items, indem es die semantische Ähnlichkeit zwischen einer 
-    Konstruktdefinition und möglichen Items berechnet. Die Analyse basiert auf zwei verschiedenen Sprachmodellen (BERT und SBERT), 
-    die speziell für die deutsche Sprache optimiert wurden.
+    Die Entwicklung von psychometrischen Fragebögen ist ein **zeitaufwändiger und kostspieliger** Prozess. Sollen neue Fragen (Items) hinzugefügt werden, 
+    muss ein Fragebogen typischerweise einer Stichprobe von ProbandInnen vorgelegt werden, damit empirisch erhoben werden kann, wie gut die neuen Items
+    das intendierte Konstrukt messen. Nach einer Pilotstudie und der Entfernung der Items, die sich nicht bewähren, muss der vorläufig finale Fragebogen nochmals einer
+    größeren Stichprobe vorgelegt werden, um die endgültigen Gütekriterien zu erheben.
     
-    Die Ähnlichkeitswerte reichen von 0 (keine Ähnlichkeit) bis 1 (perfekte Ähnlichkeit).
+    **Dieses Tool unterstützt Sie bei der Entwicklung von Items, indem es die semantische Ähnlichkeit zwischen einer 
+    Konstruktdefinition und möglichen Items berechnet.** Ähnlichkeiten zwischen allen einzelnen Items werden ebenfalls in Form einer Heatmap dargestellt. 
+    Diese Ähnlichkeiten können als (grobe) Schätzer für die Zusammenhänge zwischen Items und Konstrukt bzw. Items untereinander angesehen werden.
+    **Dadurch verkürzt das Tool die ersten Schritte der Testentwicklung bzw. -optimierung enorm.** Neue potenzielle Items können in Sekunden erprobt werden. 
+    Es müssen zudem keine empirischen Daten erhoben werden. Die Wahrscheinlichkeit, "auf Anhieb" gut funktionierende, valide Items zu konstruieren, steigt deutlich an.            
+
+    Die Analyse basiert auf zwei verschiedenen Sprachmodellen (BERT und SBERT), die speziell für die deutsche Sprache optimiert wurden.
+    **Die Ähnlichkeitswerte reichen von 0 (keine Ähnlichkeit) bis 1 (perfekte Ähnlichkeit).**
     """)
     
     st.info("Die App wurde inspiriert durch [diesen Blog-Artikel von Damiano D'Urso](https://damianodurso.github.io/Sentence-embeddings-for-Employee-Listening/).", icon="ℹ️")
 
     # Optional: Add more detailed information in an expandable section
-    with st.expander("ℹ️ Detaillierte Informationen"):
+    with st.expander("Detaillierte Informationen"):
         st.markdown("""
         **Funktionsweise:**
         1. Geben Sie eine Konstruktdefinition ein oder nutzen Sie das vorgegebene Beispiel
@@ -112,7 +120,19 @@ def main():
         2. Fügen Sie Items hinzu
         3. Klicken Sie auf 'Analyse starten'
         """)
-   
+
+        st.markdown("---")
+        st.markdown(
+            """
+            <div style='display: flex; align-items: center; gap: 10px;'>
+                <a href="https://www.linkedin.com/in/timo-krug/" style='display: flex; align-items: center; color: #26358B; text-decoration: none; gap: 5px;'>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" 
+                    width="18px"/> Timo Krug auf LinkedIn
+                </a>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
     # Main content area
     col1, col2 = st.columns([2, 1])
    
@@ -175,7 +195,8 @@ def main():
                                     for embedding in sbert_embeddings]
                 
                 # Create tabs for results
-                tab1, tab2, tab3 = st.tabs(["BERT Ergebnisse", "SBERT Ergebnisse", "Item Heatmap"])
+                tab1, tab2, tab3 = st.tabs(["BERT Ergebnisse", "SBERT Ergebnisse", 
+                                                 "Item-Ähnlichkeiten"])
                 
                 with tab1:
                     st.subheader("Top 5 Items (BERT)")
