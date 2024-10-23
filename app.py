@@ -14,6 +14,7 @@ from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import plotly.express as px
+import pandas as pd
 
 @st.cache_resource
 def load_models():
@@ -146,7 +147,48 @@ def main():
 
     # Questions/Items input
     st.header("Items")
-   
+    st.markdown("""
+    Items können entweder als CSV oder Excel-Datei hochgeladen werden oder einzeln hinzugefügt werden.
+    """)
+    st.markdown("""
+    #### Upload
+    """)
+    uploaded_file = st.file_uploader("Excel/CSV Import", type=['xlsx', 'csv'])
+
+    if uploaded_file is not None:
+        try:
+            # Read the file
+            if uploaded_file.name.endswith('.csv'):
+                df = pd.read_csv(uploaded_file)
+            else:
+                df = pd.read_excel(uploaded_file)
+            
+            # Let user select the column containing items
+            if len(df.columns) > 1:
+                column = st.selectbox("Wählen Sie die Spalte mit den Items:", df.columns)
+            else:
+                column = df.columns[0]
+            
+            # Button to import items
+            if st.button("Items importieren"):
+                # Get items from selected column
+                new_items = df[column].dropna().tolist()
+                
+                # Update session state
+                if 'questions' not in st.session_state:
+                    st.session_state.questions = []
+                st.session_state.questions.extend(new_items)
+                
+                st.success(f"{len(new_items)} Items erfolgreich importiert!")
+                st.rerun()
+                
+        except Exception as e:
+            st.error(f"Fehler beim Einlesen der Datei: {str(e)}")
+    
+    st.markdown("""
+    #### Einzel-Eingabe
+    """)
+
     # Initialize session state for questions if not exists
     if 'questions' not in st.session_state:
         st.session_state.questions = DEFAULT_QUESTIONS.copy()

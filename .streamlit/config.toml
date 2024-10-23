@@ -2,6 +2,7 @@
 base="light"
 textColor="#26358B"
 primaryColor="#26358B"
+secondaryBackgroundColor="#E3F3FA"
 
 [browser]
 gatherUsageStats = false
